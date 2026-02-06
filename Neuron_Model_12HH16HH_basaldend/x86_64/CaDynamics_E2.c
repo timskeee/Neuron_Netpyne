@@ -212,7 +212,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 CaDynamics_E2 /NG/Neuron_Model_12HH16HH/mechanisms/CaDynamics_E2.mod\n");
+ 	ivoc_help("help ?1 CaDynamics_E2 /global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/CaDynamics_E2.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -433,7 +433,7 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/NG/Neuron_Model_12HH16HH/mechanisms/CaDynamics_E2.mod";
+static const char* nmodl_filename = "/global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/CaDynamics_E2.mod";
 static const char* nmodl_file_text = 
   ": Dynamics that track inside calcium concentration\n"
   ": modified from Destexhe et al. 1994\n"
@@ -455,7 +455,7 @@ static const char* nmodl_file_text =
   "\n"
   "PARAMETER	{\n"
   "	gamma = 0.05 : percent of free calcium (not buffered)\n"
-  "	decay = 80 (ms) : rate of removal of calcium\n"
+  "	decay = 80 (ms) : rate of removal of calcium (smaller= faster removal)\n"
   "	depth = 0.1 (um) : depth of shell\n"
   "	minCai = 1e-4 (mM)\n"
   "}\n"

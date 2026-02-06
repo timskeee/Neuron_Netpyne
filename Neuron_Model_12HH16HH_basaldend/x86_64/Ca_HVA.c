@@ -46,23 +46,24 @@ extern double hoc_Exp(double);
 #define t _nt->_t
 #define dt _nt->_dt
 #define gCa_HVAbar _p[0]
-#define ica _p[1]
-#define m _p[2]
-#define h _p[3]
-#define eca _p[4]
-#define gCa _p[5]
-#define mInf _p[6]
-#define mTau _p[7]
-#define mAlpha _p[8]
-#define mBeta _p[9]
-#define hInf _p[10]
-#define hTau _p[11]
-#define hAlpha _p[12]
-#define hBeta _p[13]
-#define Dm _p[14]
-#define Dh _p[15]
-#define v _p[16]
-#define _g _p[17]
+#define hTauFac _p[1]
+#define ica _p[2]
+#define m _p[3]
+#define h _p[4]
+#define eca _p[5]
+#define gCa _p[6]
+#define mInf _p[7]
+#define mTau _p[8]
+#define mAlpha _p[9]
+#define mBeta _p[10]
+#define hInf _p[11]
+#define hTau _p[12]
+#define hAlpha _p[13]
+#define hBeta _p[14]
+#define Dm _p[15]
+#define Dh _p[16]
+#define v _p[17]
+#define _g _p[18]
 #define _ion_eca	*_ppvar[0]._pval
 #define _ion_ica	*_ppvar[1]._pval
 #define _ion_dicadv	*_ppvar[2]._pval
@@ -156,6 +157,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  "7.7.0",
 "Ca_HVA",
  "gCa_HVAbar_Ca_HVA",
+ "hTauFac_Ca_HVA",
  0,
  "ica_Ca_HVA",
  0,
@@ -170,11 +172,12 @@ extern Prop* need_memb(Symbol*);
 static void nrn_alloc(Prop* _prop) {
 	Prop *prop_ion;
 	double *_p; Datum *_ppvar;
- 	_p = nrn_prop_data_alloc(_mechtype, 18, _prop);
+ 	_p = nrn_prop_data_alloc(_mechtype, 19, _prop);
  	/*initialize range parameters*/
  	gCa_HVAbar = 1e-05;
+ 	hTauFac = 1;
  	_prop->param = _p;
- 	_prop->param_size = 18;
+ 	_prop->param_size = 19;
  	_ppvar = nrn_prop_datum_alloc(_mechtype, 4, _prop);
  	_prop->dparam = _ppvar;
  	/*connect ionic variables to this model*/
@@ -211,7 +214,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
   hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
   hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
 #endif
-  hoc_register_prop_size(_mechtype, 18, 4);
+  hoc_register_prop_size(_mechtype, 19, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "ca_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "ca_ion");
   hoc_register_dparam_semantics(_mechtype, 2, "ca_ion");
@@ -219,7 +222,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 Ca_HVA /NG/Neuron_Model_12HH16HH/mechanisms/Ca_HVA.mod\n");
+ 	ivoc_help("help ?1 Ca_HVA /global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/Ca_HVA.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -271,7 +274,7 @@ static int  rates ( _threadargsproto_ ) {
    hAlpha = ( 0.000457 * exp ( ( - 13.0 - v ) / 50.0 ) ) ;
    hBeta = ( 0.0065 / ( exp ( ( - v - 15.0 ) / 28.0 ) + 1.0 ) ) ;
    hInf = hAlpha / ( hAlpha + hBeta ) ;
-   hTau = 1.0 / ( hAlpha + hBeta ) ;
+   hTau = ( 1.0 / ( hAlpha + hBeta ) ) * hTauFac ;
      return 0; }
  
 static void _hoc_rates(void) {
@@ -489,79 +492,86 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/NG/Neuron_Model_12HH16HH/mechanisms/Ca_HVA.mod";
+static const char* nmodl_filename = "/global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/Ca_HVA.mod";
 static const char* nmodl_file_text = 
   ":Comment :\n"
   ":Reference : :		Reuveni, Friedman, Amitai, and Gutnick, J.Neurosci. 1993\n"
   "\n"
+  ":: Added hTauFac parameter to allow scaling of inactivation time constant TF010626\n"
+  "\n"
   "NEURON	{\n"
-  "	SUFFIX Ca_HVA\n"
-  "	USEION ca READ eca WRITE ica\n"
-  "	RANGE gCa_HVAbar, gCa_HVA, ica \n"
+  "    SUFFIX Ca_HVA\n"
+  "    USEION ca READ eca WRITE ica\n"
+  "    RANGE gCa_HVAbar, gCa_HVA, ica\n"
+  "    RANGE hTauFac\n"
   "}\n"
   "\n"
   "UNITS	{\n"
-  "	(S) = (siemens)\n"
-  "	(mV) = (millivolt)\n"
-  "	(mA) = (milliamp)\n"
+  "    (S) = (siemens)\n"
+  "    (mV) = (millivolt)\n"
+  "    (mA) = (milliamp)\n"
   "}\n"
   "\n"
   "PARAMETER	{\n"
-  "	gCa_HVAbar = 0.00001 (S/cm2) \n"
+  "    gCa_HVAbar = 0.00001 (S/cm2)\n"
+  "    hTauFac = 1\n"
   "}\n"
   "\n"
   "ASSIGNED	{\n"
-  "	v	(mV)\n"
-  "	eca	(mV)\n"
-  "	ica	(mA/cm2)\n"
-  "	gCa	(S/cm2)\n"
-  "	mInf\n"
-  "	mTau\n"
-  "	mAlpha\n"
-  "	mBeta\n"
-  "	hInf\n"
-  "	hTau\n"
-  "	hAlpha\n"
-  "	hBeta\n"
+  "    v	(mV)\n"
+  "    eca	(mV)\n"
+  "    ica	(mA/cm2)\n"
+  "    gCa	(S/cm2)\n"
+  "    mInf\n"
+  "    mTau\n"
+  "    mAlpha\n"
+  "    mBeta\n"
+  "    hInf\n"
+  "    hTau\n"
+  "    hAlpha\n"
+  "    hBeta\n"
   "}\n"
   "\n"
   "STATE	{ \n"
-  "	m\n"
-  "	h\n"
+  "    m\n"
+  "    h\n"
   "}\n"
   "\n"
   "BREAKPOINT	{\n"
-  "	SOLVE states METHOD cnexp\n"
-  "	gCa = gCa_HVAbar*m*m*h\n"
-  "	ica = gCa*(v-eca)\n"
+  "    SOLVE states METHOD cnexp\n"
+  "    gCa = gCa_HVAbar*m*m*h\n"
+  "    ica = gCa*(v-eca)\n"
   "}\n"
   "\n"
   "DERIVATIVE states	{\n"
-  "	rates()\n"
-  "	m' = (mInf-m)/mTau\n"
-  "	h' = (hInf-h)/hTau\n"
+  "    rates()\n"
+  "    m' = (mInf-m)/mTau\n"
+  "    h' = (hInf-h)/hTau\n"
   "}\n"
   "\n"
   "INITIAL{\n"
-  "	rates()\n"
-  "	m = mInf\n"
-  "	h = hInf\n"
+  "    rates()\n"
+  "    m = mInf\n"
+  "    h = hInf\n"
   "}\n"
   "\n"
   "PROCEDURE rates(){\n"
-  "	UNITSOFF\n"
-  "        if((v == -27) ){        \n"
+  "    UNITSOFF\n"
+  "        if((v == -27) ){\n"
   "            v = v+0.0001\n"
   "        }\n"
-  "		mAlpha =  (0.055*(-27-v))/(exp((-27-v)/3.8) - 1)        \n"
-  "		mBeta  =  (0.94*exp((-75-v)/17))\n"
-  "		mInf = mAlpha/(mAlpha + mBeta)\n"
-  "		mTau = 1/(mAlpha + mBeta)\n"
-  "		hAlpha =  (0.000457*exp((-13-v)/50))\n"
-  "		hBeta  =  (0.0065/(exp((-v-15)/28)+1))\n"
-  "		hInf = hAlpha/(hAlpha + hBeta)\n"
-  "		hTau = 1/(hAlpha + hBeta)\n"
-  "	UNITSON\n"
+  "        mAlpha =  (0.055*(-27-v))/(exp((-27-v)/3.8) - 1)\n"
+  "        mBeta  =  (0.94*exp((-75-v)/17))\n"
+  "        mInf = mAlpha/(mAlpha + mBeta)\n"
+  "        mTau = 1/(mAlpha + mBeta)\n"
+  "\n"
+  "        hAlpha =  (0.000457*exp((-13-v)/50))\n"
+  "        hBeta  =  (0.0065/(exp((-v-15)/28)+1))\n"
+  "        hInf = hAlpha/(hAlpha + hBeta)\n"
+  "\n"
+  "        : scale inactivation tau (slower inactivation if hTauFac > 1)\n"
+  "        hTau = (1/(hAlpha + hBeta)) * hTauFac\n"
+  "    UNITSON\n"
   "}\n"
   ;
 #endif

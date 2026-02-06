@@ -22,15 +22,15 @@ extern int _method3;
 extern double hoc_Exp(double);
 #endif
  
-#define nrn_init _nrn_init__na16mut
-#define _nrn_initial _nrn_initial__na16mut
-#define nrn_cur _nrn_cur__na16mut
-#define _nrn_current _nrn_current__na16mut
-#define nrn_jacob _nrn_jacob__na16mut
-#define nrn_state _nrn_state__na16mut
-#define _net_receive _net_receive__na16mut 
-#define states states__na16mut 
-#define trates trates__na16mut 
+#define nrn_init _nrn_init__na16
+#define _nrn_initial _nrn_initial__na16
+#define nrn_cur _nrn_cur__na16
+#define _nrn_current _nrn_current__na16
+#define nrn_jacob _nrn_jacob__na16
+#define nrn_state _nrn_state__na16
+#define _net_receive _net_receive__na16 
+#define states states__na16 
+#define trates trates__na16 
  
 #define _threadargscomma_ _p, _ppvar, _thread, _nt,
 #define _threadargsprotocomma_ double* _p, Datum* _ppvar, Datum* _thread, _NrnThread* _nt,
@@ -145,18 +145,18 @@ extern void hoc_reg_nmodl_filename(int, const char*);
 }
  /* connect user functions to hoc names */
  static VoidFunc hoc_intfunc[] = {
- "setdata_na16mut", _hoc_setdata,
- "alps_na16mut", _hoc_alps,
- "alpv_na16mut", _hoc_alpv,
- "bets_na16mut", _hoc_bets,
- "trap0_na16mut", _hoc_trap0,
- "trates_na16mut", _hoc_trates,
+ "setdata_na16", _hoc_setdata,
+ "alps_na16", _hoc_alps,
+ "alpv_na16", _hoc_alpv,
+ "bets_na16", _hoc_bets,
+ "trap0_na16", _hoc_trap0,
+ "trates_na16", _hoc_trates,
  0, 0
 };
-#define alps alps_na16mut
-#define alpv alpv_na16mut
-#define bets bets_na16mut
-#define trap0 trap0_na16mut
+#define alps alps_na16
+#define alpv alpv_na16
+#define bets bets_na16
+#define trap0 trap0_na16
  extern double alps( _threadargsprotocomma_ double );
  extern double alpv( _threadargsprotocomma_ double );
  extern double bets( _threadargsprotocomma_ double );
@@ -165,39 +165,39 @@ extern void hoc_reg_nmodl_filename(int, const char*);
  #define _zhexp _thread[0]._pval[1]
  #define _zsexp _thread[0]._pval[2]
  /* declare global and static user variables */
-#define Ena Ena_na16mut
+#define Ena Ena_na16
  double Ena = 55;
  /* some parameters have upper and lower limits */
  static HocParmLimits _hoc_parm_limits[] = {
  0,0,0
 };
  static HocParmUnits _hoc_parm_units[] = {
- "Ena_na16mut", "mV",
- "sh_na16mut", "mV",
- "tha_na16mut", "mV",
- "qa_na16mut", "mV",
- "Ra_na16mut", "/ms",
- "Rb_na16mut", "/ms",
- "thi1_na16mut", "mV",
- "thi2_na16mut", "mV",
- "qd_na16mut", "mV",
- "qg_na16mut", "mV",
- "Rg_na16mut", "/ms",
- "Rd_na16mut", "/ms",
- "qq_na16mut", "mV",
- "tq_na16mut", "mV",
- "thinf_na16mut", "mV",
- "qinf_na16mut", "mV",
- "vhalfs_na16mut", "mV",
- "a0s_na16mut", "ms",
- "zetas_na16mut", "1",
- "gms_na16mut", "1",
- "smax_na16mut", "ms",
- "vvh_na16mut", "mV",
- "vvs_na16mut", "mV",
- "ar2_na16mut", "1",
- "ina_ina_na16mut", "milliamp/cm2",
- "thegna_na16mut", "mho/cm2",
+ "Ena_na16", "mV",
+ "sh_na16", "mV",
+ "tha_na16", "mV",
+ "qa_na16", "mV",
+ "Ra_na16", "/ms",
+ "Rb_na16", "/ms",
+ "thi1_na16", "mV",
+ "thi2_na16", "mV",
+ "qd_na16", "mV",
+ "qg_na16", "mV",
+ "Rg_na16", "/ms",
+ "Rd_na16", "/ms",
+ "qq_na16", "mV",
+ "tq_na16", "mV",
+ "thinf_na16", "mV",
+ "qinf_na16", "mV",
+ "vhalfs_na16", "mV",
+ "a0s_na16", "ms",
+ "zetas_na16", "1",
+ "gms_na16", "1",
+ "smax_na16", "ms",
+ "vvh_na16", "mV",
+ "vvs_na16", "mV",
+ "ar2_na16", "1",
+ "ina_ina_na16", "milliamp/cm2",
+ "thegna_na16", "mho/cm2",
  0,0
 };
  static double delta_t = 0.01;
@@ -206,7 +206,7 @@ extern void hoc_reg_nmodl_filename(int, const char*);
  static double s0 = 0;
  /* connect global user variables to hoc */
  static DoubScal hoc_scdoub[] = {
- "Ena_na16mut", &Ena_na16mut,
+ "Ena_na16", &Ena_na16,
  0,0
 };
  static DoubVec hoc_vdoub[] = {
@@ -229,41 +229,41 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
  "7.7.0",
-"na16mut",
- "sh_na16mut",
- "gbar_na16mut",
- "tha_na16mut",
- "qa_na16mut",
- "Ra_na16mut",
- "Rb_na16mut",
- "thi1_na16mut",
- "thi2_na16mut",
- "qd_na16mut",
- "qg_na16mut",
- "mmin_na16mut",
- "hmin_na16mut",
- "q10_na16mut",
- "Rg_na16mut",
- "Rd_na16mut",
- "qq_na16mut",
- "tq_na16mut",
- "thinf_na16mut",
- "qinf_na16mut",
- "vhalfs_na16mut",
- "a0s_na16mut",
- "zetas_na16mut",
- "gms_na16mut",
- "smax_na16mut",
- "vvh_na16mut",
- "vvs_na16mut",
- "ar2_na16mut",
+"na16",
+ "sh_na16",
+ "gbar_na16",
+ "tha_na16",
+ "qa_na16",
+ "Ra_na16",
+ "Rb_na16",
+ "thi1_na16",
+ "thi2_na16",
+ "qd_na16",
+ "qg_na16",
+ "mmin_na16",
+ "hmin_na16",
+ "q10_na16",
+ "Rg_na16",
+ "Rd_na16",
+ "qq_na16",
+ "tq_na16",
+ "thinf_na16",
+ "qinf_na16",
+ "vhalfs_na16",
+ "a0s_na16",
+ "zetas_na16",
+ "gms_na16",
+ "smax_na16",
+ "vvh_na16",
+ "vvs_na16",
+ "ar2_na16",
  0,
- "ina_ina_na16mut",
- "thegna_na16mut",
+ "ina_ina_na16",
+ "thegna_na16",
  0,
- "m_na16mut",
- "h_na16mut",
- "s_na16mut",
+ "m_na16",
+ "h_na16",
+ "s_na16",
  0,
  0};
  static Symbol* _na_sym;
@@ -277,12 +277,12 @@ static void nrn_alloc(Prop* _prop) {
  	/*initialize range parameters*/
  	sh = 8;
  	gbar = 0.01;
- 	tha = -47;
+ 	tha = -33.5;
  	qa = 7.2;
  	Ra = 0.4;
  	Rb = 0.124;
- 	thi1 = -61;
- 	thi2 = -61;
+ 	thi1 = -47.5;
+ 	thi2 = -47.5;
  	qd = 0.5;
  	qg = 1.5;
  	mmin = 0.02;
@@ -292,9 +292,9 @@ static void nrn_alloc(Prop* _prop) {
  	Rd = 0.03;
  	qq = 10;
  	tq = -55;
- 	thinf = -65;
+ 	thinf = -51.5;
  	qinf = 7;
- 	vhalfs = -40;
+ 	vhalfs = -26.5;
  	a0s = 0.0003;
  	zetas = 12;
  	gms = 0.2;
@@ -329,7 +329,7 @@ extern void _nrn_thread_table_reg(int, void(*)(double*, Datum*, Datum*, _NrnThre
 extern void hoc_register_tolerance(int, HocStateTolerance*, Symbol***);
 extern void _cvode_abstol( Symbol**, double*, int);
 
- void _na16HHmut_TF_wtcopy_reg() {
+ void _na16HH_reg() {
 	int _vectorized = 1;
   _initlists();
  	ion_reg("na", -10000.);
@@ -354,7 +354,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 na16mut /NG/Neuron_Model_12HH16HH/mechanisms/na16HHmut_TF_wtcopy.mod\n");
+ 	ivoc_help("help ?1 na16 /global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/na16HH.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -724,7 +724,7 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/NG/Neuron_Model_12HH16HH/mechanisms/na16HHmut_TF_wtcopy.mod";
+static const char* nmodl_filename = "/global/u2/t/tfenton/Neuron_Netpyne/Neuron_Model_12HH16HH_basaldend/mechanisms/na16HH.mod";
 static const char* nmodl_file_text = 
   "TITLE na3\n"
   ": Na current \n"
@@ -732,7 +732,7 @@ static const char* nmodl_file_text =
   ": added sh to account for higher threshold M.Migliore, Apr.2002\n"
   "\n"
   "NEURON {\n"
-  "	SUFFIX na16mut\n"
+  "	SUFFIX na16\n"
   "	USEION na READ ena WRITE ina\n"
   "	RANGE  gbar, ar2, thegna, ina_ina\n"
   "	:GLOBAL vhalfs,sh,tha,qa,Ra,Rb,thi1,thi2,qd,qg,mmin,hmin,q10,Rg,qq,Rd,tq,thinf,qinf,vhalfs,a0s,zetas,gms,smax,vvh,vvs\n"
@@ -743,13 +743,13 @@ static const char* nmodl_file_text =
   "	sh   = 8	(mV)\n"
   "	gbar = 0.01 :0.1 :0.245989   	(mho/cm2)	\n"
   "								\n"
-  "	tha  =  -47(mV)		: v 1/2 for act ##TF021424 right shifting #-35 to-25 #left shift -45\n"
+  "	tha  =  -33.5	(mV)		: v 1/2 for act ##TF021424 right shifting #-35 to-25 #left shift -45\n"
   "	qa   = 7.2	(mV)		: act slope (4.5)		\n"
   "	Ra   = 0.4	(/ms)		: open (v)		\n"
   "	Rb   = 0.124 	(/ms)		: close (v)		\n"
   "\n"
-  "	thi1  = -61	(mV)		: v 1/2 for inact ##TF021424 right shift #-45	\n"
-  "	thi2  = -61 	(mV)		: v 1/2 for inact ##TF021424 right shift #-45	\n"
+  "	thi1  = -47.5	(mV)		: v 1/2 for inact ##TF021424 right shift #-45	\n"
+  "	thi2  = -47.5 	(mV)		: v 1/2 for inact ##TF021424 right shift #-45	\n"
   "	qd   = 0.5	(mV)	        : inact tau slope \n"
   "	qg   = 1.5      (mV)\n"
   "	mmin=0.02	\n"
@@ -760,10 +760,10 @@ static const char* nmodl_file_text =
   "	qq   = 10        (mV)\n"
   "	tq   = -55      (mV)\n"
   "\n"
-  "	thinf  = -65 	(mV)		: inact inf slope ##TF021424 right shift #-55\n"
+  "	thinf  = -51.5 	(mV)		: inact inf slope ##TF021424 right shift #-55\n"
   "	qinf  = 7 	(mV)		: inact inf slope \n"
   "\n"
-  "        vhalfs=-40	(mV)		: slow inact. ##TF021424 right shift #-60 \n"
+  "        vhalfs=-26.5	(mV)		: slow inact. ##TF021424 right shift #-60 \n"
   "        a0s=0.0003	(ms)		: a0s=b0s\n"
   "        zetas=12	(1)\n"
   "        gms=0.2		(1)\n"
@@ -776,7 +776,6 @@ static const char* nmodl_file_text =
   "	celsius\n"
   "	v 		(mV)\n"
   "}\n"
-  "\n"
   "\n"
   "UNITS {\n"
   "	(mA) = (milliamp)\n"

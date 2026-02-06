@@ -39,7 +39,7 @@ class Na12Model_TF:
                  ais_Kca = 0.5,
                  node_na = 1,
                  dend_K=0.025,
-                 plots_folder = './Plots/12HMM16HH_TF/SynthMuts_120523/',pfx='testprefix', 
+                 plots_folder = './Plots/',pfx='testprefix', 
                  update = True, fac=None,na12_scale=None): 
         
         
