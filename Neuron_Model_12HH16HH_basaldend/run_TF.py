@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import sys
 from pathlib import Path
 import numpy as np
-from Na12HH_Model_TF import *
-import Na12HH_Model_TF as tf
+from Na12HH_dendModel_TF import *
+import Na12HH_dendModel_TF as tf
 import os
 # import efel_feature_extractor as ef
 from currentscape.currentscape import plot_currentscape
@@ -33,7 +33,7 @@ if not os.path.exists(root_path_out): ##make directory if it doens't exist
 config_dict3={"sim_config_soma": sim_config_soma}
 
 for config_name, config in config_dict3.items():
-  path = f'WT_spikes_dvdt_FI_curves_ExamplePlots'
+  path = f'WT_spikes_dvdt_FI_curves_ExamplePlots_021626_2'
 
 
 ## Run the model and obtain raw data Voltages and corresponding times. Can also get currents if desired.
@@ -62,10 +62,10 @@ wt_Vm1,_,wt_t1,_ = simwt.get_stim_raw_data(stim_amp = 0.5,dt=0.005,rec_extra=Fal
 ####---------------------------------####
 
 ## Plot Stim and dvdt in single plot
-# fig_volts,axs = plt.subplots(2,figsize=(cm_to_in(8),cm_to_in(15)))
-# simwt.plot_stim(axs = axs[0],stim_amp = 0.5,dt=0.005,stim_dur = 500, clr='cadetblue')
-# plot_dvdt_from_volts(simwt.volt_soma, simwt.dt, axs[1],clr='cadetblue')
-# fig_volts.savefig(f'{simwt.plot_folder}/WT_validate.pdf') #Change output file path here 
+fig_volts,axs = plt.subplots(2,figsize=(cm_to_in(8),cm_to_in(15)))
+simwt.plot_stim(axs = axs[0],stim_amp = 0.5,dt=0.005,stim_dur = 500, clr='cadetblue')
+plot_dvdt_from_volts(simwt.volt_soma, simwt.dt, axs[1],clr='cadetblue')
+fig_volts.savefig(f'{simwt.plot_folder}/WT_validate.pdf') #Change output file path here 
 
 ## Plot the FI curve from stim raw data y-axis label hard-coded in NrnHelper.py line 62
-wt_fi=simwt.plot_fi_curve_2line(wt_data=None,wt2_data=None,start=-0.4,end=1,nruns=140, fn=f'WT_FI-stim0.5dur500')
+# wt_fi=simwt.plot_fi_curve_2line(wt_data=None,wt2_data=None,start=-0.4,end=1,nruns=140, fn=f'WT_FI-stim0.5dur500')
