@@ -19,7 +19,7 @@ class Na12Model_TF:
                  na16name = 'na16HH_TF2',
                  na16mut_name ='na16HH_TF2', 
                  na16mechs = ['na16','na16'], 
-                 params_folder = './params/na12HMM_HOF_params/', ## na16name='na16_orig2',na16mechs = ['na16','na16mut'], na16mut_name='na16'
+                 params_folder = './params/', ## na16name='na16_orig2',na16mechs = ['na16','na16mut'], na16mut_name='na16'
                  
                  ais_nav12_fac=5.184, 
                  nav12=1.17975,
