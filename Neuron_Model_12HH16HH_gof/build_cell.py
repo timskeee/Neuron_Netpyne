@@ -104,15 +104,18 @@ def _apical_rules():
         sk0, im0 = base[sec.name()]
         for seg in sec:
             d = h.distance(seg.x, sec=sec)
-            for mech in ('na12', 'na12mut', 'napkca'):
+            for mech in ('na12', 'napkca'):
                 m = getattr(seg, mech)
                 m.gbar = _na_taper(m.gbar, d)
             seg.Im.gImbar = _im_band(im0, d) * 0.7
             seg.SK_E2.gSK_E2bar = sk0 * 0.30 * (0.35 if d > 800.0 else 1.0)
 
 
-def build_cell(variant='WT'):
-    """Returns the cell. WT allele on na12; variant allele on na12mut + napkca."""
+def build_cell(variant='WT', expression=1.0):
+    """Returns the cell. WT allele on na12; variant allele on napkca.
+
+    expression: total Nav1.2 density (both alleles) as a fraction of the WT cell, e.g. 0.3 = 30%.
+    """
     global _built
     if _built:
         raise RuntimeError('build_cell can run only once per process')
@@ -135,11 +138,9 @@ def build_cell(variant='WT'):
 
     # Nav kinetics and densities
     _write('na12', wt)
-    for mech in ('na12mut', 'napkca'):
-        _write(mech, {**wt, **allele2})
-    _scale_gbar('na12', NAV12)
-    _scale_gbar('na12mut', NAV12 * gs)
-    _scale_gbar('napkca', NAV12 * gs)
+    _write('napkca', {**wt, **allele2})
+    _scale_gbar('na12', NAV12 * expression)
+    _scale_gbar('napkca', NAV12 * gs * expression)
     _write('na16', _load('na16HH_TF'))
     _write('na16mut', _load('na16mutHH_TF'))
     _scale_gbar('na16', NAV16)

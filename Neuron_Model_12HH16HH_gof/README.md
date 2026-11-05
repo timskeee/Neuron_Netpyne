@@ -20,6 +20,7 @@ Notes:
 
 - Use `build_cell`, not `template.hoc`: the template alone does not have the correct Nav channels or dendritic rules.
 - Build one cell per process, so export each variant in its own process.
-- Variants are heterozygous: `na12` is WT, and `na12mut` and `napkca` hold the variant. All the allele 2 current is in `napkca` (`na12mut.gbar` is 0).
+- Variants are heterozygous: `na12` is WT and `napkca` holds the variant (allele 2). The hoc still inserts `na12mut`, but its gbar is 0 (`k1422e_frac = 1`) and `build_cell` ignores it.
+- `build_cell(variant, expression=1.0)`: `expression` scales total Nav1.2 density (both alleles) relative to WT, e.g. `build_cell('WT', 0.3)` is 30%.
 - `K1422E_*` variants also change the `napkca` pore (pna:pk:pca = 1 : 0.191 : 0.1). `build_cell` sets this from the variant name.
 - Temperature is 34 °C.
