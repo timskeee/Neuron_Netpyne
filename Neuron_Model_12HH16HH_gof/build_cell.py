@@ -63,7 +63,7 @@ def _write(mech, params):
             for seg in sec:
                 m = getattr(seg, mech)
                 for k, v in params.items():
-                    if hasattr(m, k):            # Ena exists only on napkca
+                    if hasattr(m, k):            # Ena exists only on na12mut
                         setattr(m, k, v)
 
 
@@ -104,7 +104,7 @@ def _apical_rules():
         sk0, im0 = base[sec.name()]
         for seg in sec:
             d = h.distance(seg.x, sec=sec)
-            for mech in ('na12', 'napkca'):
+            for mech in ('na12', 'na12mut'):
                 m = getattr(seg, mech)
                 m.gbar = _na_taper(m.gbar, d)
             seg.Im.gImbar = _im_band(im0, d) * 0.7
@@ -112,7 +112,7 @@ def _apical_rules():
 
 
 def build_cell(variant='WT', expression=1.0):
-    """Returns the cell. WT allele on na12; variant allele on napkca.
+    """Returns the cell. WT allele on na12; variant allele on na12mut.
 
     expression: total Nav1.2 density (both alleles) as a fraction of the WT cell, e.g. 0.3 = 30%.
     """
@@ -138,9 +138,9 @@ def build_cell(variant='WT', expression=1.0):
 
     # Nav kinetics and densities
     _write('na12', wt)
-    _write('napkca', {**wt, **allele2})
+    _write('na12mut', {**wt, **allele2})
     _scale_gbar('na12', NAV12 * expression)
-    _scale_gbar('napkca', NAV12 * gs * expression)
+    _scale_gbar('na12mut', NAV12 * gs * expression)
     _write('na16', _load('na16HH_TF'))
     _write('na16mut', _load('na16mutHH_TF'))
     _scale_gbar('na16', NAV16)
@@ -158,10 +158,10 @@ def build_cell(variant='WT', expression=1.0):
 
     _apical_rules()
 
-    # Allele 2 pore: selective Na, except K1422E
-    pore = (1.0, 0.1910, 0.1) if variant.split('_')[0] == 'K1422E' else (1.0, 0.0, 0.0)
-    for sec in h.allsec():
-        for seg in sec:
-            if hasattr(seg, 'napkca'):
-                seg.napkca.pna, seg.napkca.pk, seg.napkca.pca = pore
+    # Allele 2 pore: na12mut is Na-selective by default (pna:pk:pca = 1:0:0). Only K1422E changes it.
+    if variant.split('_')[0] == 'K1422E':
+        for sec in h.allsec():
+            for seg in sec:
+                if hasattr(seg, 'na12mut'):
+                    seg.na12mut.pna, seg.na12mut.pk, seg.na12mut.pca = (1.0, 0.1910, 0.1)
     return h.cell

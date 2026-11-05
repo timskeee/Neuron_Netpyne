@@ -28,7 +28,6 @@ proc biophys() { local x, d
         insert Ih
 		insert na12
 		insert na12mut
-		insert napkca		// K1422E non-selective cation channel (mutant Nav1.2 allele)
 		insert na16
 		insert na16mut
         insert SKv3_1
@@ -44,7 +43,6 @@ proc biophys() { local x, d
 		insert Ih
 		insert na12
 		insert na12mut
-		insert napkca		// K1422E non-selective cation channel (mutant Nav1.2 allele)
 		insert na16
 		insert na16mut
         insert Ca_LVAst
@@ -63,7 +61,6 @@ proc biophys() { local x, d
 		insert CaDynamics_E2
 		insert na12
 		insert na12mut
-		insert napkca		// K1422E non-selective cation channel (mutant Nav1.2 allele)
 		insert na16
 		insert na16mut
 	}
@@ -78,7 +75,6 @@ proc biophys() { local x, d
 		insert Ca_LVAst
 		insert na12
 		insert na12mut
-		insert napkca		// K1422E non-selective cation channel (mutant Nav1.2 allele)
 		insert na16
 		insert na16mut
 	}
@@ -114,7 +110,6 @@ proc biophys() { local x, d
 	forsec $o1.all {
         if (ismembrane("na12")) { gbar_na12 = 0 }
         if (ismembrane("na12mut")) { gbar_na12mut = 0 }
-        if (ismembrane("napkca")) { gbar_napkca = 0 }
         if (ismembrane("na16")) { gbar_na16 = 0 }
         if (ismembrane("na16mut")) { gbar_na16mut = 0 }
     }

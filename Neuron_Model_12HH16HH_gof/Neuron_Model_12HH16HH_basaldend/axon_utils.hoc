@@ -18,19 +18,10 @@ func min() {
 }
 
 // ---------------------------------------------------------------------------
-// K1422E heterozygote switch.
-// The model is already a 50/50 heterozygote: na12 (WT allele) and na12mut
-// (variant allele) always carry equal conductance. k1422e_frac decides how much
-// of the VARIANT ALLELE is expressed as the K1422E non-selective cation channel
-// (napkca) instead of an ordinary selective Nav1.2 (na12mut).
-//
-//   k1422e_frac = 0  -> na12mut 100%, napkca 0%    (control / WT-like)
-//   k1422e_frac = 1  -> na12mut 0%,   napkca 100%  (K1422E heterozygote)  <-- default
-//
-// Total Nav1.2 conductance is conserved at every value: the mutation
-// REALLOCATES the variant allele's conductance, it never adds conductance.
+// The model is a 50/50 heterozygote: na12 (WT allele) and na12mut (variant
+// allele) carry equal conductance. na12mut is Na-selective by default; its
+// pna/pk/pca permeabilities can be changed deliberately (see build_cell.py).
 // ---------------------------------------------------------------------------
-k1422e_frac = 1
 
 proc initial_values(){
 	dend_na12 =0.0001/2
@@ -253,8 +244,7 @@ proc create_ais(){
         } else {
             na12mut_profile = 0 // Value outside the arch
         }
-        gbar_na12mut(x) = na12mut_profile * (1 - k1422e_frac)
-        gbar_napkca(x)  = na12mut_profile * k1422e_frac
+        gbar_na12mut(x) = na12mut_profile
         //print "na12mut_profile=", na12mut_profile // Debug print
         //////////////////////////////
 
@@ -297,8 +287,7 @@ proc create_ais(){
     gbar_na16mut(ais_end / L:1) = naked_axon_na / 2:naked_axon_na / 2 // 1/5th nav1.6
     gbar_na12(ais_end / L:1) = 0:0 //naked axon ##Don't start naked axon until end of AIS
     gbar_na12mut(ais_end / L:1) = 0:0 //naked axon ##Don't start naked axon until end of AIS
-    gbar_napkca(ais_end / L:1) = 0:0 //naked axon -- no Nav1.2 here, so no K1422E either
-
+    
     // K_Pst/K_Tst uniform over AIS and axon (x170, Stage 2 D6).
     // Was axon_KP / axon_KT on the AIS and /10 beyond ais_end.
     gK_Pstbar_K_Pst = axon_KP
@@ -319,8 +308,7 @@ proc update_soma(){
 
 	vShift_na = navshift
 	gbar_na12 = soma_na12/2
-	gbar_na12mut = (soma_na12/2) * (1 - k1422e_frac)
-	gbar_napkca  = (soma_na12/2) * k1422e_frac
+	gbar_na12mut = soma_na12/2
 	gbar_na16 = soma_na16/2
 	gbar_na16mut = soma_na16/2
 	gSKv3_1bar_SKv3_1 = soma_K
@@ -329,8 +317,7 @@ proc update_soma(){
 proc update_dend(){
 	forsec cell.apical{
 		gbar_na12 = dend_na12/2
-		gbar_na12mut = (dend_na12/2) * (1 - k1422e_frac)
-		gbar_napkca  = (dend_na12/2) * k1422e_frac
+		gbar_na12mut = dend_na12/2
 		gbar_na16 = dend_na16/2
 		gbar_na16mut = dend_na16/2
 		gSKv3_1bar_SKv3_1 = dend_k
@@ -339,8 +326,7 @@ proc update_dend(){
     // --- Added this block to set initial basal dendrite vals ---
     forsec cell.basal{
         gbar_na12 = dend_na12/2
-        gbar_na12mut = (dend_na12/2) * (1 - k1422e_frac)
-        gbar_napkca  = (dend_na12/2) * k1422e_frac
+        gbar_na12mut = dend_na12/2
         gbar_na16 = dend_na16/2
         gbar_na16mut = dend_na16/2
         gSKv3_1bar_SKv3_1 = dend_k
